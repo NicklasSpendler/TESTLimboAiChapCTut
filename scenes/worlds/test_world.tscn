@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=4 uid="uid://b7av0i2jhcmf1"]
+
+[ext_resource type="PackedScene" uid="uid://brw10ntjap6pt" path="res://scenes/player/player.tscn" id="1_k3ref"]
+[ext_resource type="PackedScene" uid="uid://c5vvsaeb43804" path="res://scenes/npc/bird.tscn" id="2_wdhyl"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k3ref"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_wdhyl"]
+sky_material = SubResource("ProceduralSkyMaterial_k3ref")
+
+[sub_resource type="Environment" id="Environment_nvj10"]
+background_mode = 2
+sky = SubResource("Sky_wdhyl")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_rm7gt"]
+_surfaces = [{
+"aabb": AABB(-50, -0.25, -10, 100, 0.5, 20),
+"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
+"format": 34359738391,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("AABIwgAAgL4AACBBAABIwgAAgL4AACDBAABIwgAAgD4AACDBAABIQgAAgL4AACDBAABIwgAAgL4AACDBAABIwgAAgL4AACBBAABIwgAAgD4AACDBAABIwgAAgL4AACDBAABIQgAAgL4AACDBAABIwgAAgD4AACDBAABIwgAAgD4AACBBAABIwgAAgL4AACBBAABIwgAAgL4AACBBAABIwgAAgD4AACBBAABIQgAAgD4AACBBAABIQgAAgD4AACBBAABIwgAAgD4AACBBAABIwgAAgD4AACDBAABIwgAAgL4AACBBAABIQgAAgL4AACBBAABIQgAAgL4AACDBAABIQgAAgD4AACBBAABIQgAAgL4AACBBAABIwgAAgL4AACBBAABIQgAAgL4AACDBAABIQgAAgL4AACBBAABIQgAAgD4AACBBAABIQgAAgL4AACDBAABIQgAAgD4AACDBAABIwgAAgD4AACDBAABIwgAAgD4AACDBAABIQgAAgD4AACDBAABIQgAAgD4AACBBAABIQgAAgD4AACBBAABIQgAAgD4AACDBAABIQgAAgL4AACDBAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
+}]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_k3ref"]
+points = PackedVector3Array(50.3546, 0.81383, 10.2128, -50.3546, -0.60461, -10.3546, -50.3546, -0.60461, 10.2128, -50.3546, 0.81383, -10.3546, 50.3546, -0.60461, -10.3546, -50.3546, 0.81383, 10.2128, 50.3546, -0.60461, 10.2128, 50.3546, 0.81383, -10.3546)
+
+[node name="TestWorld" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_nvj10")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("ArrayMesh_rm7gt")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_k3ref")
+
+[node name="Player" parent="CSGBakedMeshInstance3D" instance=ExtResource("1_k3ref")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7.17937)
+
+[node name="Bird" parent="." instance=ExtResource("2_wdhyl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26564, 0)
