@@ -1,6 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://c5vvsaeb43804"]
+[gd_scene load_steps=13 format=3 uid="uid://c5vvsaeb43804"]
 
 [ext_resource type="Texture2D" uid="uid://h6mab1fp2aur" path="res://assets/bird-black.png" id="1_5d272"]
+[ext_resource type="Script" uid="uid://uva5roqpvqps" path="res://scenes/npc/bird.gd" id="1_u5ywr"]
+[ext_resource type="BehaviorTree" uid="uid://bbc6pj73cqq0o" path="res://ai/trees/bird.tres" id="2_2wksx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2wksx"]
 radius = 0.417716
@@ -31,6 +33,41 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vf0xj"]
+resource_name = "fly"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 4]
+}
+
+[sub_resource type="Animation" id="Animation_if34l"]
+resource_name = "idle"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_u5ywr"]
@@ -67,23 +104,6 @@ tracks/0/keys = {
 "values": [0, 1, 2, 1, 2, 1, 0]
 }
 
-[sub_resource type="Animation" id="Animation_if34l"]
-resource_name = "idle"
-length = 0.1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="Animation" id="Animation_cy2l8"]
 resource_name = "tweet"
 length = 0.3
@@ -101,24 +121,6 @@ tracks/0/keys = {
 "values": [0, 6, 0]
 }
 
-[sub_resource type="Animation" id="Animation_vf0xj"]
-resource_name = "fly"
-length = 0.4
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [3, 4, 5, 4]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u5ywr"]
 _data = {
 &"RESET": SubResource("Animation_2wksx"),
@@ -129,7 +131,10 @@ _data = {
 &"tweet": SubResource("Animation_cy2l8")
 }
 
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_u5ywr"]
+
 [node name="Bird" type="CharacterBody3D"]
+script = ExtResource("1_u5ywr")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
@@ -146,3 +151,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_u5ywr")
 }
 autoplay = "idle"
+
+[node name="BTPlayer" type="BTPlayer" parent="."]
+behavior_tree = ExtResource("2_2wksx")
+blackboard_plan = SubResource("BlackboardPlan_u5ywr")
