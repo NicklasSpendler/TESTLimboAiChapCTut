@@ -1,0 +1,55 @@
+[gd_resource type="BehaviorTree" load_steps=15 format=3 uid="uid://bbc6pj73cqq0o"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_mx5st"]
+
+[sub_resource type="BTAlwaysFail" id="BTAlwaysFail_mx5st"]
+
+[sub_resource type="BTSequence" id="BTSequence_hfiq7"]
+custom_name = "Sequence - Fly Away"
+children = [SubResource("BTAlwaysFail_mx5st")]
+
+[sub_resource type="BBNode" id="BBNode_mx5st"]
+saved_value = NodePath("AnimationPlayer")
+resource_name = "AnimationPlayer"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_hfiq7"]
+animation_player = SubResource("BBNode_mx5st")
+animation_name = &"idle"
+
+[sub_resource type="BTRandomWait" id="BTRandomWait_mx5st"]
+min_duration = 0.5
+max_duration = 1.0
+
+[sub_resource type="BBNode" id="BBNode_hfiq7"]
+saved_value = NodePath("AnimationPlayer")
+resource_name = "AnimationPlayer"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_xj4ea"]
+animation_player = SubResource("BBNode_hfiq7")
+animation_name = &"peck"
+
+[sub_resource type="BBNode" id="BBNode_ohsvd"]
+saved_value = NodePath("AnimationPlayer")
+resource_name = "AnimationPlayer"
+
+[sub_resource type="BTAwaitAnimation" id="BTAwaitAnimation_m3a64"]
+animation_player = SubResource("BBNode_ohsvd")
+animation_name = &"peck"
+max_time = 2.0
+
+[sub_resource type="BTWait" id="BTWait_mx5st"]
+
+[sub_resource type="BTSequence" id="BTSequence_ohsvd"]
+custom_name = "Sequence - chill"
+children = [SubResource("BTPlayAnimation_hfiq7"), SubResource("BTRandomWait_mx5st"), SubResource("BTPlayAnimation_xj4ea"), SubResource("BTAwaitAnimation_m3a64"), SubResource("BTWait_mx5st")]
+
+[sub_resource type="BTSelector" id="BTSelector_ohsvd"]
+custom_name = "Selector - Patrol"
+children = [SubResource("BTSequence_ohsvd")]
+
+[sub_resource type="BTSelector" id="BTSelector_m3a64"]
+children = [SubResource("BTSequence_hfiq7"), SubResource("BTSelector_ohsvd")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_mx5st")
+root_task = SubResource("BTSelector_m3a64")
