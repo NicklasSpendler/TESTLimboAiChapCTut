@@ -1,4 +1,7 @@
-[gd_resource type="BehaviorTree" load_steps=15 format=3 uid="uid://bbc6pj73cqq0o"]
+[gd_resource type="BehaviorTree" load_steps=23 format=3 uid="uid://bbc6pj73cqq0o"]
+
+[ext_resource type="Script" uid="uid://cdxsxq4ygdypt" path="res://ai/tasks/choose_random_pos.gd" id="1_hfiq7"]
+[ext_resource type="Script" uid="uid://bm4hw58nvwvth" path="res://ai/tasks/move_to_pos.gd" id="2_ohsvd"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_mx5st"]
 
@@ -43,9 +46,30 @@ max_time = 2.0
 custom_name = "Sequence - chill"
 children = [SubResource("BTPlayAnimation_hfiq7"), SubResource("BTRandomWait_mx5st"), SubResource("BTPlayAnimation_xj4ea"), SubResource("BTAwaitAnimation_m3a64"), SubResource("BTWait_mx5st")]
 
+[sub_resource type="BTProbability" id="BTProbability_mx5st"]
+children = [SubResource("BTSequence_ohsvd")]
+
+[sub_resource type="BTAction" id="BTAction_ohsvd"]
+script = ExtResource("1_hfiq7")
+
+[sub_resource type="BBNode" id="BBNode_m3a64"]
+saved_value = NodePath("AnimationPlayer")
+resource_name = "AnimationPlayer"
+
+[sub_resource type="BTPlayAnimation" id="BTPlayAnimation_xg3kt"]
+animation_player = SubResource("BBNode_m3a64")
+animation_name = &"move"
+
+[sub_resource type="BTAction" id="BTAction_m3a64"]
+script = ExtResource("2_ohsvd")
+
+[sub_resource type="BTSequence" id="BTSequence_7ar0q"]
+custom_name = "Sequence - move"
+children = [SubResource("BTAction_ohsvd"), SubResource("BTPlayAnimation_xg3kt"), SubResource("BTAction_m3a64")]
+
 [sub_resource type="BTSelector" id="BTSelector_ohsvd"]
 custom_name = "Selector - Patrol"
-children = [SubResource("BTSequence_ohsvd")]
+children = [SubResource("BTProbability_mx5st"), SubResource("BTSequence_7ar0q")]
 
 [sub_resource type="BTSelector" id="BTSelector_m3a64"]
 children = [SubResource("BTSequence_hfiq7"), SubResource("BTSelector_ohsvd")]
