@@ -2,6 +2,7 @@ class_name bird
 extends CharacterBody3D
 
 @onready var sprite_3d: Sprite3D = $Sprite3D
+@onready var hitbox: Area3D = $Hitbox
 
 var speed: float = 100;
 

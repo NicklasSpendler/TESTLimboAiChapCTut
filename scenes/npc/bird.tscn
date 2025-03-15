@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c5vvsaeb43804"]
+[gd_scene load_steps=14 format=3 uid="uid://c5vvsaeb43804"]
 
 [ext_resource type="Texture2D" uid="uid://h6mab1fp2aur" path="res://assets/bird-black.png" id="1_5d272"]
 [ext_resource type="Script" uid="uid://uva5roqpvqps" path="res://scenes/npc/bird.gd" id="1_u5ywr"]
@@ -145,6 +145,9 @@ _data = {
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_u5ywr"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_u5ywr"]
+size = Vector3(0.716797, 1, 1)
+
 [node name="Bird" type="CharacterBody3D"]
 script = ExtResource("1_u5ywr")
 
@@ -167,3 +170,8 @@ autoplay = "idle"
 [node name="BTPlayer" type="BTPlayer" parent="."]
 behavior_tree = ExtResource("2_2wksx")
 blackboard_plan = SubResource("BlackboardPlan_u5ywr")
+
+[node name="Hitbox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("BoxShape3D_u5ywr")
